@@ -1,4 +1,4 @@
-from db import data_db as db
+from net.database.db import data_db as db
 from sqlalchemy import Column, Integer, String, Boolean
 
 class Move(db.Base):
@@ -33,4 +33,35 @@ class Move(db.Base):
     def __repr__(self):
         return "<Move(pk='{}'>".format(self.pk)
 
-db.migrate()
+
+class Country(db.Base):
+    __tablename__ = 'countries'
+
+    pk                       = Column(Integer, primary_key=True)
+    name                     = Column(String)
+    slug                     = Column(String)
+    numerical_representation = Column(Integer)
+
+    def __repr__(self):
+        return "<Country(pk='{}'>".format(self.pk)
+
+
+class Genre(db.Base):
+    __tablename__ = 'genres'
+
+    pk                       = Column(Integer, primary_key=True)
+    name                     = Column(String)
+    slug                     = Column(String)
+    numerical_representation = Column(Integer)
+
+    def __repr__(self):
+        return "<Country(pk='{}'>".format(self.pk)
+
+
+class Сompany(db.Base):
+    __tablename__ = 'companies'
+
+    pk                       = Column(Integer, primary_key=True)
+    name                     = Column(String)
+    slug                     = Column(String)
+    numerical_representation = Column(Integer)

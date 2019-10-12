@@ -7,13 +7,16 @@ from sqlalchemy.orm import sessionmaker
 class DB:
     def __init__(self, db_path):
         engine = create_engine('sqlite:///{}'.format(db_path), echo=True)
-        self.connect = engine
+        self.engine = engine
         self.Base = declarative_base()
-        self.Session = sessionmaker(bind=engine)
+        session = sessionmaker(bind=engine)
+        self.Session = session()
 
     def migrate(self):
         self.Base.metadata.create_all(self.connect)
 
 
 data_db = DB(db_path='data.db')
-data_db.migrate()
+
+# for create tables
+# data_db.migrate()

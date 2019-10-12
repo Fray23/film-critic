@@ -41,15 +41,3 @@ class NeuralNetwork:
         self.who += self.lear * numpy.dot((output_error * final_outputs * (1.0 - final_outputs)), numpy.transpose(hidden_outputs))
         self.wih += self.lear * numpy.dot((hidden_error * hidden_outputs * (1.0 - hidden_outputs)), numpy.transpose(inputs))
         pass
-
-
-input_nodes = 3
-hidden_nodes = 3
-output_nodes = 2
-lear = 3
-
-n = NeuralNetwork(input_nodes, hidden_nodes, output_nodes, lear)
-t1 = n.q([1, 1, 1, ])
-# print(t1)
-for i in range(10000):
-    n.train([1, 1, 1, ], [0, 2])
