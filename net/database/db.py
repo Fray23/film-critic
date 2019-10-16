@@ -13,7 +13,7 @@ class DB:
         self.Session = session()
 
     def migrate(self):
-        self.Base.metadata.create_all(self.connect)
+        self.Base.metadata.create_all(self.engine)
 
 
 data_db = DB(db_path='data.db')
