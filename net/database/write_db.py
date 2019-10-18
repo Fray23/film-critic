@@ -1,9 +1,10 @@
+import ast
 import csv
-from net.database.db import data_db as db
-from net.move.models import Move, Company, Genre, Country
+
 from sqlalchemy import exists
 
-import ast
+from net.database.db import data_db as db
+from net.move.models import Company, Country, Genre, Move
 
 
 def get_obj_from_json(json_list, model_name):
@@ -32,15 +33,14 @@ def write_data_to_move_meta_table(path):
             try:
                 model = models[model_type]
                 for i in ast.literal_eval(row[model_type]):
-                    if not db.Session.query(exists().where(model.name==i['name'])).scalar() and i['name'] != '':
+                    if not db.Session.query(exists().where(model.name == i['name'])).scalar() and i['name'] != '':
                         db.Session.add(model(
                             name=i['name'],
                             slug='-'.join(i['name'].split(' ')),
-                            ))
+                        ))
             except Exception as e:
                 print('error ', e)
                 return
-
 
     with open(path, 'rt') as f:
         spamreader = csv.DictReader(f, quotechar='\"')
@@ -58,7 +58,7 @@ def write_data_to_move_table(path):
         spamreader = csv.DictReader(f, quotechar='\"')
 
         for row in spamreader:
-            if db.Session.query(exists().where(Move.title==row['original_title'])).scalar():
+            if db.Session.query(exists().where(Move.title == row['original_title'])).scalar():
                 continue
 
             move = Move(
@@ -82,14 +82,14 @@ def write_data_to_move_table(path):
                 title=row['original_title'],
                 video=row['video'],
                 vote_average=row['vote_average'],
-                vote_count=row['vote_count'],       
+                vote_count=row['vote_count'],
             )
             try:
                 genres, companies, countries = (
-                    get_obj_from_json(row['genres'], model_name='genres'), 
+                    get_obj_from_json(row['genres'], model_name='genres'),
                     get_obj_from_json(row['production_companies'], model_name='production_companies'),
                     get_obj_from_json(row['production_countries'], model_name='production_countries')
-                    )
+                )
             except Exception as e:
                 print('error ', e)
                 continue
