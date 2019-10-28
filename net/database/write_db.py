@@ -19,6 +19,13 @@ def get_obj_from_json(json_list, model_name):
     return model_objects
 
 
+def word_to_code(word):
+    w = 0
+    for i in list(word):
+        w += ord(i)
+    return w
+
+
 def write_data_to_move_meta_table(path):
     def add_new_obj_to_session(row, model_type):
         models = {
@@ -34,9 +41,11 @@ def write_data_to_move_meta_table(path):
                 model = models[model_type]
                 for i in ast.literal_eval(row[model_type]):
                     if not db.Session.query(exists().where(model.name == i['name'])).scalar() and i['name'] != '':
+                        slug = '-'.join(i['name'].split(' '))
                         db.Session.add(model(
                             name=i['name'],
-                            slug='-'.join(i['name'].split(' ')),
+                            slug=slug,
+                            numerical_representation=word_to_code(slug)
                         ))
             except Exception as e:
                 print('error ', e)

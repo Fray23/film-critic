@@ -39,4 +39,15 @@ class NeuralNetwork:
 
         self.who += self.lear * numpy.dot((output_error * final_outputs * (1.0 - final_outputs)), numpy.transpose(hidden_outputs))
         self.wih += self.lear * numpy.dot((hidden_error * hidden_outputs * (1.0 - hidden_outputs)), numpy.transpose(inputs))
-        pass
+
+    def save(self):
+        with open('who.py', 'w') as who_file, open('wih.py', 'w') as wih_file:
+            who_file.write(f'WHO={self.who.tolist()}')
+            wih_file.write(f'WIH={self.wih.tolist()}')
+
+    def load(self):
+        from who import WHO
+        from wih import WIH
+
+        self.who = numpy.array(WHO)
+        self.wih = numpy.array(WIH)
